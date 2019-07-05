@@ -1,0 +1,9 @@
+{
+	"status": "success",
+	"data": {
+		"on": true,
+		"threshold": 40
+	},
+	"message": null,
+	"timestamp": 1562332916134
+}

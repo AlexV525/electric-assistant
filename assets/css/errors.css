@@ -1,0 +1,103 @@
+@charset "utf-8";
+
+body {
+    background: #ffffff url('../images/404_bg.png') repeat fixed left top;
+    font-family: "PingFang SC", "Microsoft Yahei UI", "Segoe UI", sans-serif, Arial;
+}
+.errorImage {
+    margin: 50px auto;
+}
+@media screen and (max-width: 414px) {
+    .errorImage {
+        margin: 20px auto;
+    }
+}
+.errorImage > img {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    width: 60%;
+    max-width: 448px;
+}
+.errorMessage {
+    position: relative;
+    display: block;
+    text-align: center;
+    width: auto;
+    margin: 5px auto;
+}
+div.errorMessage {
+    margin-bottom: 30px;
+}
+.messageChinese {
+    color: #fff;
+    font-size: 24px;
+    text-shadow: black 1px 1px 1px;
+}
+.messageEnglish {
+    color: #aaa;
+    font-size: 16px;
+    text-shadow: black 1px 1px 1px;
+}
+.errorButton {
+    position: relative;
+    margin-bottom: 15px;
+    height: 52px;
+    text-align: center;
+}
+.errorButton > a,
+.errorButton > button {
+    position: relative;
+    width: 130px;
+    line-height: 2.5;
+    border: 0;
+    border-radius: 0;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+.errorButtonBack {
+    background-color: #A3E0FF;
+    color: #222;
+}
+.errorButtonBack:hover {
+    background-color: #3996C5;
+    color: #222;
+}
+.errorButtonMail {
+    background-color: #FF3B3B;
+    color: #ddd;
+}
+.errorButtonMail:hover {
+    background-color: #CC2121;
+    color: #ddd;
+}
+.errorButton > button[name=yes] {
+    background-color: #42cc71;
+    color: #222;
+}
+.errorButton > button[name=yes]:hover,
+.errorButton > button[name=yes]:focus {
+    background-color: #5cff9b;
+    color: #222;
+}
+.errorButton > button[name=no] {
+    background-color: #cc4242;
+    color: #222;
+}
+.errorButton > button[name=no]:hover,
+.errorButton > button[name=no]:focus {
+    background-color: #ec5959;
+    color: #222;
+}
+.roomInfo {
+    display: block;
+    position: relative;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.roomInfo span {
+    display: block;
+    margin: 10px auto;
+    font-size: 18px;
+    color: #fff;
+}

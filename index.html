@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+    <title>电量助手</title>
+    <meta name="author" content="av@alexv525.com">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="email=no,telephone=no">
+    <meta name="apple-mobile-web-app-title" content="电量助手" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="theme-color" content="#191F29">
+    <meta name="msapplication-TileImage" content="favicon.ico">
+    <link rel="icon" href="favicon.ico" sizes="32x32">
+    <link rel="icon" href="favicon.ico" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="favicon.ico">
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/vendor/fontawesome/css/fa-solid.min.css">
+    <link rel="stylesheet" href="assets/vendor/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="assets/vendor/bootstrap-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="assets/vendor/sweetalert/src/sweetalert.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="fixed">
+    <div id="loading" class="loader">
+        <div class="loader-inner">
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+            <div class="loader-errormsg op-0">
+                <span>应用加载失败</span>
+                <br />
+                <span>原因：<b class="error-type"></b></span>
+                <br />
+                <a href="./" class="error-refresh">
+                    <i class="fa fa-redo"></i> 重新加载
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="container op-0">
+        <p id="bg-year"></p>
+        <div class="userProfile">
+            <div class="userInfo">
+                <div class="idenfiter"></div>
+                <h3 class="userName">
+                    嗨，<b id="username"></b>！
+                </h3>
+                <p class="userRoom">
+                    <b id="userroom"></b>
+                    <i  id="getroommate"
+                        class="fa fa-users"
+                        data-toggle="modal"
+                        data-target="#roomModal"
+                    >
+                    </i>
+                </p>
+                <div class="type-bg">
+                    <img src="assets/images/electric.png" alt="电量">
+                </div>
+            </div>
+        </div>
+        <div class="userSetting text-center">
+            <button type="button" data-toggle="modal" data-target="#settingModal">
+                <i class="fa fa-cogs" aria-hidden="true"></i>
+                电量提醒设置
+            </button>
+        </div>
+        <div class="billTotal">
+            <div class="billCount countNow">
+                <span class="countNow KWh"></span>
+                <span class="countNow title">实时用电
+                    <i
+                        class="fa fa-question-circle"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-original-title="由楼栋机器按一定时间间隔采集"
+                    >
+                    </i>
+                </span>
+            </div>
+            <div class="billCount countBalance">
+                <span class="countBalance KWh"></span>
+                <span class="countBalance title">剩余电量
+                    <i
+                        class="fa fa-question-circle"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-original-title="采集时的剩余电量"
+                    >
+                    </i>
+                </span>
+            </div>
+        </div>
+        <div class="billTotal">
+            <div class="billCount countLast">
+                <span class="countLast KWh"></span>
+                <span class="countLast title">昨日用电
+                    <i
+                        class="fa fa-question-circle"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-original-title="两次采集间隔的用电量"
+                    >
+                    </i>
+                </span>
+            </div>
+            <div class="billCount countMonth">
+                <span class="countMonth KWh"></span>
+                <span class="countMonth title">本月用电
+                    <i
+                        class="fa fa-question-circle"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        data-original-title="当前月份的总用电量"
+                    >
+                    </i>
+                </span>
+            </div>
+        </div>
+        <div class="billChart">
+            <div id="echarts"></div>
+        </div>
+        <div class="billButton">
+            <div class="billButton-group btn-group">
+                <button class="btn btn-left btn-eleRecord" 
+                        data-toggle="modal"
+                        data-target="#eleModal"
+                >
+                    <i class="fa fa-angle-double-left"></i>
+                    用电记录
+                </button>
+                <button class="btn btn-right btn-eleCharge"
+                        data-toggle="modal"
+                        data-target="#eleModal"
+                >
+                    充值记录
+                    <i class="fa fa-angle-double-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="roomModal" tabindex="-1" data-keyboard="true" aria-labelledby="roomModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="关闭">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title text-center" id="roomModal-title">宿舍信息</h4>
+                </div>
+                <div class="modal-body" id="roomModal-body">
+                    <table id="roomTable"
+                           class="table table-hover table-striped text-center"
+                    >
+                        <thead>
+                            <tr>
+                                <th>学号</th>
+                                <th style="min-width:58px">姓名</th>
+                                <th>宿舍</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="eleModal" tabindex="-1" data-keyboard="true" aria-labelledby="eleModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="关闭">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title text-center" id="eleModal-title"></h4>
+                </div>
+                <div class="modal-body" id="eleModal-body">
+                    <div class="listSearch">
+                        <label for="datepicker">月份：</label>
+                        <input id="datepicker" type="text" class="form-control datepicker" readonly>
+                        <button type="button" id="tableFetch" class="btn">查询</button>
+                    </div>
+                    <table id="eleTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="settingModal" tabindex="-1" data-keyboard="true" aria-labelledby="settingModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="关闭">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title text-center" id="settingModal-title">电量提醒设置</h4>
+                </div>
+                <div class="modal-body" id="settingModal-body">
+                    <div class="form-group">
+                        <div class="field">
+                            <span>低电量提醒</span>
+                            <div class="pull-right">
+                                <input type="checkbox" name="notify" id="switch" class="chooseBtn">
+                                <label for="switch" class="choose-label"></label>
+                            </div>
+                        </div>
+                        <div class="field nofity-detail hidden">
+                            <span>提醒阈值(10-99)
+                                <i
+                                    class="fa fa-question-circle"
+                                    data-toggle="tooltip"
+                                    data-placement="right"
+                                    data-original-title="当电量低于阈值时推送提醒"
+                                >
+                                </i>
+                            </span>
+                            <label for="threshold" class="pull-right">&nbsp;KWh</label>
+                            <input
+                                    type="number"
+                                    name="threshold"
+                                    id="threshold"
+                                    class="input-underline field-threshold"
+                                    min="0"
+                                    max="99"
+                                    minlength="2"
+                                    maxlength="2"
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="settingModal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-save-setting pull-right" disabled>保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/uaJudge.js"></script>
+    <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="assets/vendor/raven/raven.min.js"></script>
+    <script>Raven.config('https://8204d4f63773427b96ad264789cd996f@sentry.io/244020').install();</script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/vendor/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="assets/vendor/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="assets/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+    <script src="assets/vendor/echarts/echarts.min.js"></script>
+    <script src="assets/vendor/sweetalert/src/sweetalert.min.js"></script>
+    <script src="assets/js/new.js"></script>
+</body>
+</html>
